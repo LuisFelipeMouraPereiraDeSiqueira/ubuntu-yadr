@@ -36,7 +36,9 @@ set hidden
 
 "turn on syntax highlighting
 syntax on
-
+colorscheme solarized
+set background=dark
+set t_Co=256
 " ================ Search Settings  =================
 
 set incsearch        "Find the next match as we type the search

@@ -1,66 +1,25 @@
 {
-	"auto_complete_triggers":
-	[
-		{
-			"characters": "->",
-			"selector": "php"
-		}
-	],
-	"color_scheme": "Packages/Color Scheme - Default/Pastels on Dark.tmTheme",
-	"font_size": 9.0,
-	"ignored_packages":
-	[
-		"TCL",
-		"ASP",
-		"ActionScript",
-		"AppleScript",
-		"C#",
-		"C++",
-		"Clojure",
-		"D",
-		"Go",
-		"Groovy",
-		"Haskell",
-		"Java",
-		"LaTeX",
-		"Lisp",
-		"Lua",
-		"Objective-C",
-		"Perl",
-		"R",
-		"Ruby",
-		"Batch File",
-		"Erlang",
-		"Graphviz",
-		"Makefile",
-		"Textile",
-		"Vintage"
-	],
+	"auto_upgrade_last_run": 1340805582,
 	"installed_packages":
 	[
-		"SublimeCodeIntel",
-		"Additional PHP Snippets",
-		"CSSLint",
-		"CTags",
 		"CTags for PHP",
 		"DocBlockr",
 		"Git",
-		"Goto-CSS-Declaration",
+		"IcedCoffeeScript",
 		"LESS",
 		"Package Control",
 		"PHP-Twig",
 		"Phpcs",
 		"PHPUnit",
+		"Pman",
 		"sublime-csspecific",
 		"SublimeCodeIntel",
 		"SublimeLinter",
+		"SublimePeek",
 		"SystemVerilog",
+		"TODO Control",
 		"Twitter Bootstrap Snippets",
-		"zenburn",
-		"ZenCoding",
-		"TrailingSpaces"
-	],
-	"match_selection": true,
-	"tab_size": 4,
-	"translate_tabs_to_spaces": true
+		"Xdebug",
+		"ZenCoding"
+	]
 }
