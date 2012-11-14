@@ -1,16 +1,25 @@
 require 'rake'
 
 desc "Hook our dotfiles into system-standard positions."
-task :install => :submodules do
+task :install => [:submodules] do
+  puts
+  puts "======================================================"
+  puts "Welcome to YADR Installation. I'll ask you a few"
+  puts "questions about which files to install. Nothing will"
+  puts "be overwritten without your consent."
+  puts "======================================================"
+  puts
   # this has all the linkables from this directory.
   linkables = []
-  linkables += Dir.glob('sublime-text-2/config') if want_to_install?('.config/sublime-text-2')
   linkables += Dir.glob('git/*') if want_to_install?('git')
   linkables += Dir.glob('irb/*') if want_to_install?('irb/pry')
   linkables += Dir.glob('ruby/*') if want_to_install?('ruby (gems)')
+  linkables += Dir.glob('ctags/*') if want_to_install?('ctags config (better js/ruby support)')
+  linkables += Dir.glob('vimify/*') if want_to_install?('vimification of mysql/irb/command line')
   linkables += Dir.glob('{vim,vimrc}') if want_to_install?('vim')
   linkables += Dir.glob('zsh/zshrc') if want_to_install?('zsh')
-  linkables += Dir.glob('screenrc/screenrc') if want_to_install?('screenrc')
+  Rake::Task['zsh_themes'].invoke
+
   skip_all = false
   overwrite_all = false
   backup_all = false
@@ -37,11 +46,21 @@ task :install => :submodules do
         end
       end
       FileUtils.rm_rf(target) if overwrite || overwrite_all
-      `mv "$HOME/.#{file}" "$HOME/.#{file}.backup"` if backup || backup_all
+      run %{ mv "$HOME/.#{file}" "$HOME/.#{file}.backup" } if backup || backup_all
     end
-    `ln -s "#{source}" "#{target}"`
+    run %{ ln -s "#{source}" "#{target}" }
   end
   success_msg("installed")
+end
+
+task :zsh_themes do
+  if File.exist?("#{ENV['HOME']}/.oh-my-zsh/modules/prompt/functions")
+    puts "Detected oh-my-zsh @sorin-ionescu version."
+    run %{ ln -nfs #{ENV["PWD"]}/oh-my-zsh/modules/prompt/functions/* $HOME/.oh-my-zsh/modules/prompt/functions/ } if want_to_install?('zsh themes')
+  elsif File.exist?("#{ENV['HOME']}/.oh-my-zsh")
+    puts "Detected oh-my-zsh @robbyrussell version."
+    run %{ ln -nfs #{ENV["PWD"]}/oh-my-zsh/themes/* $HOME/.oh-my-zsh/themes/ } if want_to_install?('zsh themes')
+  end
 end
 
 desc "Init and update submodules."
@@ -53,6 +72,11 @@ task :default => 'install'
 
 
 private
+def run(cmd)
+  puts
+  puts "[Installing] #{cmd}"
+  `#{cmd}` unless ENV['DEBUG']
+end
 
 def want_to_install? (section)
   puts "Would you like to install configuration files for: #{section}? [y]es, [n]o"
@@ -69,12 +93,4 @@ def success_msg(action)
   puts "  (_______\_____|\____|_|      "
   puts ""
   puts "YADR has been #{action}. Please restart your terminal and vim."
-  puts ""
-  puts "=================================================================="
-  puts "Note: you may also create ~/.yadr/.secrets with your own variables."
-  puts "      to do so, just do the command:"
-  puts ""
-  puts "  cp ~/.yadr/.secrets.dist ~/.yadr/.secrets"
-  puts ""
-  puts "      edit then restart your terminal."
 end
